@@ -78,7 +78,8 @@ const html = `
       send();
       if (timer) timer = setTimeout(cb, 3000);
     });
-    timer = setTimeout(cb, 3000);
+    timer = 1;
+    cb();
     e.currentTarget.textContent = "Unfollow";
   });
 </script>
