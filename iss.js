@@ -21,17 +21,25 @@ const html = `
   <p>
     <button id="update">Update</button>
     <button id="jump">Jump</button>
+    <button id="follow">Follow</button>
   </p>
 </div>
 <script>
   let lat, lng, alt;
 
   const update = () => {
-    // WORKSHOP: HERE IS CODE TO FETCH ISS DATA
+    return fetch("https://api.wheretheiss.at/v1/satellites/25544").then(r => r.json()).then(data => {
+      lat = data.latitude;
+      lng = data.longitude;
+      alt = data.altitude * 1000; // km -> m
+      document.getElementById("lat").textContent = data.latitude;
+      document.getElementById("lon").textContent = data.longitude;
+      document.getElementById("alt").textContent = data.altitude;
+    });
   };
 
   const send = () => {
-    // WORKSHOP: HERE IS CODE TO SEND DATA TO RE:EARTH
+    parent.postMessage({ lat, lng, alt }, "*");
   };
 
   document.getElementById("update").addEventListener("click", update);
@@ -57,6 +65,21 @@ const html = `
 
   updateExtended(${JSON.stringify(reearth.widget.extended || null)});
   update();
+
+  document.getElementById("follow").addEventListener("click", (e) => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = undefined;
+      e.currentTarget.textContent = "Follow";
+      return;
+    }
+    const cb = () => update().then(() => {
+      send();
+      if (timer) timer = setTimeout(cb, 3000);
+    });
+    cb();
+    e.currentTarget.textContent = "Unfollow";
+  });
 </script>
 `;
 
@@ -68,4 +91,15 @@ reearth.on("update", () => {
   });
 });
 
-// WORKSHOP: HERE IS CODE TO MOVE CAMERA
+reearth.on("message", msg => {
+  reearth.visualizer.camera.flyTo({
+    lat: msg.lat,
+    lng: msg.lng,
+    height: msg.alt,
+    heading: 0,
+    pitch: -Math.PI/2,
+    roll: 0,
+  }, {
+    duration: 2
+  });
+});
