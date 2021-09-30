@@ -66,6 +66,7 @@ const html = `
   updateExtended(${JSON.stringify(reearth.widget.extended || null)});
   update();
 
+  let timer;
   document.getElementById("follow").addEventListener("click", (e) => {
     if (timer) {
       clearTimeout(timer);
