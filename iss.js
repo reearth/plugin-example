@@ -97,11 +97,19 @@ reearth.on("message", msg => {
   reearth.visualizer.camera.flyTo({
     lat: msg.lat,
     lng: msg.lng,
-    height: msg.alt,
+    height: msg.alt + 1000,
     heading: 0,
     pitch: -Math.PI/2,
     roll: 0,
   }, {
     duration: 2
   });
+  const layer = reearth.layers.find(l => l.type === "model" && l.title === "ISS");
+  if(layer){
+    reearth.layers.overrideProperty(layer.id, {
+      default: {
+      location: { lat:msg.lat, lng: msg.lng, height: msg.alt }
+      }
+    });
+  }
 });
