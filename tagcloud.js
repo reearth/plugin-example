@@ -97,12 +97,11 @@ reearth.on("update", send);
 send();
 
 function tags() {
-  const t = reearth.layers.tags.flatMap(tg => tg.tags?.map(t => ({
+  return reearth.layers.tags.flatMap(tg => tg.tags?.map(t => ({
     id: t.id,
     label: t.label ?? "",
     count: reearth.layers.findByTags(t.id).length,
   }))).filter(t => !!t);
-  return t;
 }
 
 function send() {
