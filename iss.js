@@ -8,7 +8,6 @@ const html = `
     border-radius: 5px;
     background-color: rgba(111, 111, 111, 0.5);
     box-sizing: border-box;
-    width: 300px;
   }
   .extendedh body, .extendedh #wrapper { width: 100%; }
   .extendedv body, .extendedv #wrapper { height: 100%; }
@@ -22,6 +21,7 @@ const html = `
     <button id="update">Update</button>
     <button id="jump">Jump</button>
     <button id="follow">Follow</button>
+    <button id="resize">Resize</button>
   </p>
 </div>
 <script>
@@ -39,7 +39,7 @@ const html = `
   };
 
   const send = () => {
-    parent.postMessage({ lat, lng, alt }, "*");
+    parent.postMessage({ type: "fly", lat, lng, alt }, "*");
   };
 
   document.getElementById("update").addEventListener("click", update);
@@ -82,10 +82,16 @@ const html = `
     cb();
     e.currentTarget.textContent = "Unfollow";
   });
+
+  let folded = false;
+  document.getElementById("resize").addEventListener("click", (e) => {
+    folded = !folded;
+    parent.postMessage({ type: "resize", folded }, "*");
+  });
 </script>
 `;
 
-reearth.ui.show(html);
+reearth.ui.show(html, { width: 300 });
 
 reearth.on("update", () => {
   reearth.ui.postMessage({
@@ -94,23 +100,27 @@ reearth.on("update", () => {
 });
 
 reearth.on("message", msg => {
-  reearth.visualizer.camera.flyTo({
-    lat: msg.lat,
-    lng: msg.lng,
-    height: msg.alt + 1000,
-    heading: 0,
-    pitch: -Math.PI/2,
-    roll: 0,
-  }, {
-    duration: 2
-  });
-  const layer = reearth.layers.find(l => l.type === "model" && l.title === "ISS");
-  if (layer) {
-    reearth.layers.overrideProperty(layer.id, {
-      default: {
-      location: { lat:msg.lat, lng: msg.lng },
-      height: msg.alt
-      }
+  if (msg.type === "fly") {
+    reearth.visualizer.camera.flyTo({
+      lat: msg.lat,
+      lng: msg.lng,
+      height: msg.alt + 1000,
+      heading: 0,
+      pitch: -Math.PI/2,
+      roll: 0,
+    }, {
+      duration: 2
     });
+    const layer = reearth.layers.find(l => l.type === "model" && l.title === "ISS");
+    if (layer) {
+      reearth.layers.overrideProperty(layer.id, {
+        default: {
+        location: { lat: msg.lat, lng: msg.lng },
+        height: msg.alt
+        }
+      });
+    }
+  } else if (msg.type === "resize") {
+    reearth.ui.resize(msg.folded ? 100 : 300, undefined);
   }
 });
