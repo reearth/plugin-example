@@ -105,7 +105,7 @@ reearth.on("message", msg => {
     duration: 2
   });
   const layer = reearth.layers.find(l => l.type === "model" && l.title === "ISS");
-  if(layer){
+  if (layer) {
     reearth.layers.overrideProperty(layer.id, {
       default: {
       location: { lat:msg.lat, lng: msg.lng },

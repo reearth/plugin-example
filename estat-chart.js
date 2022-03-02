@@ -72,7 +72,7 @@ const html = `
   });
 
   window.addEventListener("message", e => {
-    if (e.source !== parent) return;
+    if (e.source !== parent || !e.data.reearth) return;
 
     property = e.data;
     if (property.area) {
@@ -90,6 +90,12 @@ send();
 
 function send() {
   if (reearth.block?.property?.default) {
-    reearth.ui.postMessage(reearth.block.property.default);
+    reearth.ui.postMessage({
+      // This is necessary to determine if the message is caused by a plugin,
+      // since the browser may send a message to all iframes
+      // depending on the browser and operating environment, such as Chrome on Android.
+      reearth: true,
+      ...reearth.block.property.default
+    });
   }
 }
