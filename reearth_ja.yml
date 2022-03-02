@@ -9,3 +9,5 @@ extensions:
   estat-chart:
     name: e-statチャート
     description: e-statのチャートを表示します。
+  tagcloud:
+    name: タグクラウド

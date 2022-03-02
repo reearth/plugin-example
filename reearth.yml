@@ -42,3 +42,6 @@ extensions:
             - id: area
               type: number
               title: Area code
+  - id: tagcloud
+    type: widget
+    name: Tag Cloud
