@@ -97,7 +97,7 @@ reearth.on("update", send);
 send();
 
 function tags() {
-  return reearth.layers.tags.flatMap(tg => (tg.tags ? [tg] : tg.tags).map(t => ({
+  return reearth.layers.tags.flatMap(tg => (tg.tags || [tg]).map(t => ({
     id: t.id,
     label: t.label ?? "",
     count: reearth.layers.findByTags(t.id).length,
