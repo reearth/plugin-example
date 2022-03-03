@@ -121,6 +121,6 @@ reearth.on("message", msg => {
       });
     }
   } else if (msg.type === "resize") {
-    reearth.ui.resize(msg.folded ? 100 : 300, undefined, msg.folded ? undefined : true);
+    reearth.ui.resize?.(msg.folded ? 100 : 300, undefined, msg.folded ? undefined : true);
   }
 });
