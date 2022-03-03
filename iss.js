@@ -11,6 +11,8 @@ const html = `
   }
   .extendedh body, .extendedh #wrapper { width: 100%; }
   .extendedv body, .extendedv #wrapper { height: 100%; }
+  ::-webkit-scrollbar { width: 8px; background: gray; }
+  ::-webkit-scrollbar-thumb { border-radius: 4px; background: red; }
 </style>
 <div id="wrapper">
   <h1>Current ISS location</h1>
@@ -83,7 +85,7 @@ const html = `
     e.currentTarget.textContent = "Unfollow";
   });
 
-  let folded = false;
+  let folded = true;
   document.getElementById("resize").addEventListener("click", (e) => {
     folded = !folded;
     parent.postMessage({ type: "resize", folded }, "*");
@@ -91,7 +93,7 @@ const html = `
 </script>
 `;
 
-reearth.ui.show(html, { width: 300, extended: true });
+reearth.ui.show(html, { width: 300 });
 
 reearth.on("update", () => {
   reearth.ui.postMessage({
@@ -121,6 +123,6 @@ reearth.on("message", msg => {
       });
     }
   } else if (msg.type === "resize") {
-    reearth.ui.resize?.(msg.folded ? 100 : 300, undefined, msg.folded ? undefined : true);
+    reearth.ui.resize?.(msg.folded ? 300 : 500, undefined, msg.folded ? undefined : true);
   }
 });
