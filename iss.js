@@ -91,7 +91,7 @@ const html = `
 </script>
 `;
 
-reearth.ui.show(html, { width: 300 });
+reearth.ui.show(html, { width: 300, extended: true });
 
 reearth.on("update", () => {
   reearth.ui.postMessage({
@@ -115,12 +115,12 @@ reearth.on("message", msg => {
     if (layer) {
       reearth.layers.overrideProperty(layer.id, {
         default: {
-        location: { lat: msg.lat, lng: msg.lng },
-        height: msg.alt
+          location: { lat: msg.lat, lng: msg.lng },
+          height: msg.alt
         }
       });
     }
   } else if (msg.type === "resize") {
-    reearth.ui.resize(msg.folded ? 100 : 300, undefined);
+    reearth.ui.resize(msg.folded ? 100 : 300, undefined, msg.folded ? undefined : true);
   }
 });
