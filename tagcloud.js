@@ -51,6 +51,7 @@ const html = `
 <script>
   const tc = document.getElementById("tc");
   window.addEventListener("message", e => {
+    // e.data is { tags: { id: string; label: string; count: number }[] }
     if (e.source !== parent || !e.data.reearth) return;
     tc.innerHTML = "";
 
@@ -83,12 +84,7 @@ const html = `
 let hidden = [];
 
 reearth.on("message", data => {
-  if (!data.tags) return;
-  const displayed = reearth.layers.findByTags(...data.tags).map(l => l.id);
-  const newHidden = data.tags.length ? reearth.layers.findAll(l => !displayed.includes(l.id)).map(l => l.id) : [];
-  reearth.layers.show(...hidden);
-  reearth.layers.hide(...newHidden);
-  hidden = newHidden;
+  // WORKSHOP: show and hide layers by tag data
 });
 
 reearth.ui.show(html);
@@ -96,19 +92,10 @@ reearth.on("update", send);
 send();
 
 function tags() {
-  return reearth.layers.tags.flatMap(tg => (tg.tags || [tg]).map(t => ({
-    id: t.id,
-    label: t.label ?? "",
-    count: reearth.layers.findByTags(t.id).length,
-  }))).filter(t => !!t);
+  // WORKSHOP: get tag data of layers
 }
 
 function send() {
-  reearth.ui.postMessage({
-    // This is necessary to determine if the message is caused by a plugin,
-    // since the browser may send a message to all iframes
-    // depending on the browser and operating environment, such as Chrome on Android.
-    reearth: true,
-    tags: tags(),
-  });
+  // WORKSHOP: send data to iframe
+  // data should be { tags: { id: string; label: string; count: number }[] }
 }
