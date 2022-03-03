@@ -21,7 +21,6 @@ const html = `
     font-size: calc(var(--size) * 1rem);
     color: #a33;
     display: block;
-    font-size: 1.5rem;
     padding: 0.125rem 0.25rem;
     text-decoration: none;
     position: relative;
