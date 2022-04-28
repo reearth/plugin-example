@@ -16,7 +16,7 @@ reearth.ui.show(
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v13.0" nonce="QhVE4Z3L"></script>
 
 <script>
-// recieve message
+	// recieve message
    window.addEventListener("message", e => {
     if (e.source !== parent) return;
     property = e.data.property;
