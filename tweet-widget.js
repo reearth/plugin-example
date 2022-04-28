@@ -48,6 +48,7 @@ send();
 function send() {
   if (reearth.widget?.property?.default) {
     reearth.ui.postMessage({
+      type: "twitter",
       property: reearth.widget.property.default
     });
   }
