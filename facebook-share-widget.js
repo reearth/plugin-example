@@ -37,6 +37,7 @@ send();
 function send() {
   if (reearth.widget?.property?.default) {
     reearth.ui.postMessage({
+      type: "facebook",
       property: reearth.widget.property.default
     });
   }
