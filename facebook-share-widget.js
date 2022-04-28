@@ -18,7 +18,7 @@ reearth.ui.show(
 <script>
 	// recieve message
    window.addEventListener("message", e => {
-    if (e.source !== parent) return;
+    if (e.source !== parent || !e.data || e.data.type !== "facebook") return;
     property = e.data.property;
     if (property) {
       let link = document.getElementById("facebook-share")
