@@ -22,7 +22,7 @@ reearth.ui.show(
 
   // recieve message
    window.addEventListener("message", e => {
-    if (e.source !== parent) return;
+    if (e.source !== parent || !e.data || e.data.type !== "twitter") return;
     property = e.data.property;
     if (property.url) {
       let link = document.getElementById("twitter-button")
