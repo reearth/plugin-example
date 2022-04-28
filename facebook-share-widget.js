@@ -24,7 +24,6 @@ reearth.ui.show(
       let link = document.getElementById("facebook-share")
       link.setAttribute('data-href', property.url);
     }
-    e.source.reearth.on();
   });
 </script>
 
