@@ -15,7 +15,7 @@ const html = `
   ::-webkit-scrollbar-thumb { border-radius: 4px; background: red; }
 </style>
 <div id="wrapper">
-  <h1>Current ISS location</h1>
+  <h1>The Incredible ISS</h1>
   <p>Latitude: <span id="lat">-</span></p>
   <p>Longitude: <span id="lon">-</span></p>
   <p>Altitude: <span id="alt">-</span>km</p>
@@ -44,7 +44,7 @@ const html = `
     parent.postMessage({ type: "fly", lat, lng, alt }, "*");
   };
 
-  document.getElementById("update").addEventListener("click", update);
+  // document.getElementById("update").addEventListener("click", update);
   document.getElementById("jump").addEventListener("click", send);
 
   const updateExtended = e => {
